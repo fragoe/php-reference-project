@@ -1,0 +1,21 @@
+version: "3.4"
+services:
+  app:
+    working_dir: /app
+    build:
+      context: .
+      target: dev-macos
+    volumes:
+      - ./:/app
+
+  web:
+    image: nginx
+    volumes:
+      - ./build/files/host.conf:/etc/nginx/conf.d/default.conf
+      - ./web/app.php:/app/web/app.php
+    ports:
+      - 8081:80
+    links:
+      - app
+    depends_on:
+      - app
